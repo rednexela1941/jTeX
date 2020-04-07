@@ -1,13 +1,8 @@
 module jtex
 
-# I kind of want a struct, which we could do with a function and 
-# This will represent a class.
-# We need to set the document class with properties.
-
-
+export document
 
 function document()
-    statements = []
     class = ("extrarticle", "12pt")
     packages = []
     preamble = [] # comes after packages
@@ -72,18 +67,23 @@ function document()
         tex_string *= "\\end{document}\n"
         return tex_string
     end
-
-  print() = (println(class);println(packages))
-
-  return ()->(print, set_class, use_package, raw_preamble, new_command, add_line, generate_tex)
+    function output_tex(filename)
+        tex_string = generate_tex()
+        open(filename, "w+") do file
+            write(file, tex_string)
+        end
+        println("jtex wrote $(filename)")
+    end
+  # return the various functions.
+  return ()->(set_class, use_package, raw_preamble, new_command, add_line, generate_tex, output_tex)
 end
 
-doc = document()
-doc.use_package("package1", "no options")
-doc.raw_preamble("\\newstuff(blah blah blah)")
+# doc = document()
+# doc.use_package("package1", "no options")
+# doc.raw_preamble("\\newstuff(blah blah blah)")
 
-tex_string = doc.generate_tex()
-println(tex_string)
+# tex_string = doc.generate_tex()
+# println(tex_string)
 end
 
 
