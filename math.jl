@@ -1,5 +1,33 @@
 module math_jtex
-export matrix_tex
+export matrix_tex, format_num
+
+function format_num(input)
+    re = real(input)
+    im = imag(input)
+    string = ""
+    if im == 0
+        string *= "$(re)"
+    elseif re == 0
+        if abs(im) == 1
+            if im == 1
+                string *= "i"
+            else
+                string *= "-i"
+            end
+        else
+            string *= "$(im)i"
+        end
+    else
+        if im < 0
+            string *= "$(re)-$(im)i"
+        else
+            string *= "$(re)+$(im)i"
+        end
+    end
+    return string
+end
+
+
 
 function matrix_tex(matrix)
     rows, cols = size(matrix)
@@ -7,27 +35,7 @@ function matrix_tex(matrix)
     for i in 1:rows
         for j in 1:cols
             term = matrix[i,j]
-            re = real(term)
-            im = imag(term)
-            if im == 0
-                string *= "$(re)"
-            elseif re == 0
-                if abs(im) == 1
-                    if im == 1
-                        string *= "i"
-                    else
-                        string *= "-i"
-                    end
-                else
-                    string *= "$(im)i"
-                end
-            else
-                if im < 0
-                    string *= "$(re)-$(im)i"
-                else
-                    string *= "$(re)+$(im)i"
-                end
-            end
+            string *= format_num(term)
             if j < cols
                 string *= " & "
             end
