@@ -2,10 +2,10 @@ module jtex
 
 export document, env, command
 
-function command(type,content=nothing,options=nothing)
+function command(type; line = nothing, options = nothing)
     lines = []
-    if content != nothing
-        push!(lines, content)
+    if line != nothing
+        push!(lines, line)
     end
     function get_raw()
         string = "\\$(type)"
@@ -22,7 +22,7 @@ function command(type,content=nothing,options=nothing)
         end
         string *= "}"
     end
-    add(content) = push!(lines, content)
+    add(cont) = push!(lines, cont)
     return ()->(add, get_raw)
 end
 
