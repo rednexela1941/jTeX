@@ -6,7 +6,11 @@ function format_num(input)
     im = imag(input)
     string = ""
     if im == 0
-        string *= "$(re)"
+        if isinteger(re)
+            string *= "$(trunc(Int,re))"
+        else
+            string *= "$(re)"
+        end
     elseif re == 0
         if abs(im) == 1
             if im == 1
@@ -30,7 +34,12 @@ end
 
 
 function matrix_tex(matrix)
-    rows, cols = size(matrix)
+    if length(size(matrix)) == 1
+        cols = 1
+        rows = size(matrix)[1]
+    else
+        rows, cols = size(matrix)
+    end
     string = "\\begin{pmatrix}\n"
     for i in 1:rows
         for j in 1:cols

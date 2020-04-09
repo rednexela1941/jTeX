@@ -26,7 +26,7 @@ function command(type; line = nothing, options = nothing)
     return ()->(add, get_raw)
 end
 
-function env(type, options=nothing) ## ie \begin{type}
+function env(type; options=nothing) ## ie \begin{type}
     contents = []
     add(env) = push!(contents, env)
     function get_raw()
